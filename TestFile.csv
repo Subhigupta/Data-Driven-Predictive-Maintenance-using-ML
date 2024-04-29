@@ -1,0 +1,4 @@
+AirTemperature,ProcessTemperature,RotationalSpeed,Torque,ToolWear
+300,300,1500,40,30
+290,290,1400,39,29
+298.9,309.1,2861,4.6,143
