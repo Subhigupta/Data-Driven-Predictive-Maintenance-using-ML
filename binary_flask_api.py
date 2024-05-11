@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 import pickle
 import sklearn
-print(sklearn.__version__)
 
 app=Flask(__name__)
 

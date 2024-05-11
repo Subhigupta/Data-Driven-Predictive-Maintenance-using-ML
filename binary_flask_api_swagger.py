@@ -3,19 +3,15 @@ from flask import Flask,request
 import pandas as pd
 import numpy as np
 import pickle
-import sklearn
-import flasgger
 from flasgger import Swagger
-
-print(sklearn.__version__)
 
 app=Flask(__name__)
 Swagger(app)#giving an indication to Flask Web app to generate UI part
 
 
 #Load the classifier file
-pickle_in=open('random_forest_binary_clf.pkl','rb')
-random_forest_binary_clf=pickle.load(pickle_in)
+pickle_in=open('decision_tree_binary_clf.pkl','rb')
+decision_tree_binary_clf=pickle.load(pickle_in)
 
 @app.route('/')
 def welcome():
@@ -72,7 +68,7 @@ def predict():
     columns = ['AirTemperature', 'ProcessTemperature', 'RotationalSpeed', 'Torque', 'ToolWear']
     test_df=pd.DataFrame(data,columns=columns,index=index_values)
 
-    prediction=random_forest_binary_clf.predict(test_df)
+    prediction=decision_tree_binary_clf.predict(test_df)
     return "The predicted values is" + str(prediction)
 
 @app.route('/predict_file',methods=["POST"])
@@ -93,7 +89,7 @@ def predict_file():
         
     """
     df_test=pd.read_csv(request.files.get("file"))
-    prediction=random_forest_binary_clf.predict(df_test)
+    prediction=decision_tree_binary_clf.predict(df_test)
     return "The predicted values for the csv are" + str(list(prediction))
 if __name__=='__main__':
     app.run(debug=True)
