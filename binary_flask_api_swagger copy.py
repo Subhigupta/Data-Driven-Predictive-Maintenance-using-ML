@@ -50,22 +50,6 @@ def get_predict(AirTemperature,ProcessTemperature,RotationalSpeed,Torque,ToolWea
 
     return test_df
 
-# def post_predict():
-#     if request.method=='POST':
-#         f=request.files.get("file")
-#         df_test=pd.read_csv(f)
-#         return(url_for("predict_file_bnry_dt",df_test))
-#     return df_test
-
-# @app.route('/post_predict',methods=['POST'])
-# def post_predict():
-#     if request.method=='POST':
-#         f=request.files.get("file")
-#         df_test=pd.read_csv(f)
-#         return redirect((url_for("predict_file_bnry_dt",df_test=df_test)))
-    # return df_test
-
-
 @app.route('/file_predict_binary', methods=['POST'])
 def file_predict_binary():
     if request.method == 'POST':
@@ -99,12 +83,45 @@ def input_predict_binary():
       prediction = decision_tree_binary_clf.predict(df_test)
       return "The predicted values for the csv are" + str(list(prediction))
 
-    
-@app.route('/predict_file_bnry_dt', methods=['GET'])
-def predict_file_bnry_dt():
-    df_test = request.args.get('df_test')
-    prediction = decision_tree_binary_clf.predict(df_test)
-    return "The predicted values for the csv are" + str(list(prediction))
+@app.route('/file_predict_multinomial', methods=['POST'])
+def file_predict_multinomial():
+    if request.method == 'POST':
+        f = request.files.get("file")
+        df_test = pd.read_csv(f)
+        # Check which model button was clicked
+        model = request.form.get('model')
+        if model == "Decision Tree":
+          prediction = dt_multi_clf.predict(df_test)
+          return "The predicted values for the csv are" + str(list(prediction))
+        elif model == "Random Forest":
+          prediction = rf_multi_clf.predict(df_test)
+          return "The predicted values for the csv are" + str(list(prediction))
+        elif model=="Logistic Regression":
+            prediction=lr_multi_clf.predict(df_test)
+            return "The predicted values for the csv are" + str(list(prediction))
+
+@app.route('/input_predict_multinomial',methods=['POST'])
+def input_predict_multinomial():
+    AirTemperature=request.form["airTemperature"]
+    ProcessTemperature=request.form["processTemperature"]
+    ToolWear=request.form["toolWear"]
+    RotationalSpeed=request.form["rotationalSpeed"]
+    Torque=request.form["torque"]
+
+    df_test=get_predict(AirTemperature,ProcessTemperature,RotationalSpeed,Torque,ToolWear)
+
+    # Check which model button was clicked
+    # Check which model button was clicked
+    model = request.form.get('model')
+    if model == "Decision Tree":
+      prediction = dt_multi_clf.predict(df_test)
+      return "The predicted values for the csv are" + str(list(prediction))
+    elif model == "Random Forest":
+      prediction = rf_multi_clf.predict(df_test)
+      return "The predicted values for the csv are" + str(list(prediction))
+    elif model=="Logistic Regression":
+        prediction=lr_multi_clf.predict(df_test)
+        return "The predicted values for the csv are" + str(list(prediction))
 
 @app.route('/')
 @app.route('/home')
@@ -118,302 +135,6 @@ def binary():
 @app.route('/multinomial')
 def multinomial():
     return render_template("multinomial.html")
-
-@app.route('/predict_bnry_dt') #by default get method
-def predict_bnry_dt():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:  
-      - name: AirTemperature
-        in: query
-        type: number
-        required: true
-      - name: ProcessTemperature
-        in: query
-        type: number
-        required: true
-      - name: RotationalSpeed
-        in: query
-        type: number
-        required: true
-      - name: Torque
-        in: query
-        type: number
-        required: true
-      - name: ToolWear
-        in: query
-        type: number
-        required: true
-    responses:
-        200:
-            description: The output values
-        
-    """
-
-    test_df=get_predict()
-    prediction=decision_tree_binary_clf.predict(test_df)
-    return "The predicted values is" + str(prediction)
-
-# @app.route('/predict_file_bnry_dt',methods=['GET'])
-# def predict_file_bnry_dt(df_test):
-
-#     """Let's Classify for failure in a machine 
-#     This is using docstrings for specifications.
-#     ---
-#     parameters:
-#       - name: file
-#         in: formData
-#         type: file
-#         required: true
-      
-#     responses:
-#         200:
-#             description: The output values
-        
-#     """
-#     # if request.method=='POST':
-#     #     f=request.files.get("file")
-#     #     df_test=post_predict(f)
-#     #     #f.save(f.filename)
-#     #     #return render_template("message.html",name=f.filename)
-#     #     #df_test=post_predict(f)
-#     df_test = request.args.get('df_test')
-#     prediction=decision_tree_binary_clf.predict(df_test)
-#     return "The predicted values for the csv are" + str(list(prediction))
-
-@app.route('/predict_bnry_xgboost') #by default get method
-def predict_bnry_xgboost():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:  
-      - name: AirTemperature
-        in: query
-        type: number
-        required: true
-      - name: ProcessTemperature
-        in: query
-        type: number
-        required: true
-      - name: RotationalSpeed
-        in: query
-        type: number
-        required: true
-      - name: Torque
-        in: query
-        type: number
-        required: true
-      - name: ToolWear
-        in: query
-        type: number
-        required: true
-    responses:
-        200:
-            description: The output values
-        
-    """
-
-    test_df=get_predict()
-    prediction=xgboost_binary_clf.predict(test_df)
-    return "The predicted values is" + str(prediction)
-
-@app.route('/predict_file_bnry_xgboost',methods=["POST"])
-def predict_file_bnry_xgboost():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:
-      - name: file
-        in: formData
-        type: file
-        required: true
-      
-    responses:
-        200:
-            description: The output values
-        
-    """
-    df_test=post_predict()
-    prediction=xgboost_binary_clf.predict(df_test)
-    return "The predicted values for the csv are" + str(list(prediction))
-
-@app.route('/predict_multi_lr') #by default get method
-def predict_multi_lr():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:  
-      - name: AirTemperature
-        in: query
-        type: number
-        required: true
-      - name: ProcessTemperature
-        in: query
-        type: number
-        required: true
-      - name: RotationalSpeed
-        in: query
-        type: number
-        required: true
-      - name: Torque
-        in: query
-        type: number
-        required: true
-      - name: ToolWear
-        in: query
-        type: number
-        required: true
-    responses:
-        200:
-            description: The output values
-        
-    """
-
-    test_df=get_predict()
-    prediction=lr_multi_clf.predict(test_df)
-    return "The predicted values is" + str(prediction)
-
-@app.route('/predict_file_multi_lr',methods=["POST"])
-def predict_file_multi_lr():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:
-      - name: file
-        in: formData
-        type: file
-        required: true
-      
-    responses:
-        200:
-            description: The output values
-        
-    """
-    df_test=post_predict()
-    prediction=lr_multi_clf.predict(df_test)
-    return "The predicted values for the csv are" + str(list(prediction))
-
-@app.route('/predict_multi_dt') #by default get method
-def predict_multi_dt():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:  
-      - name: AirTemperature
-        in: query
-        type: number
-        required: true
-      - name: ProcessTemperature
-        in: query
-        type: number
-        required: true
-      - name: RotationalSpeed
-        in: query
-        type: number
-        required: true
-      - name: Torque
-        in: query
-        type: number
-        required: true
-      - name: ToolWear
-        in: query
-        type: number
-        required: true
-    responses:
-        200:
-            description: The output values
-        
-    """
-
-    test_df=get_predict()
-    prediction=dt_multi_clf.predict(test_df)
-    return "The predicted values is" + str(prediction)
-
-@app.route('/predict_file_multi_dt',methods=["POST"])
-def predict_file_multi_dt():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:
-      - name: file
-        in: formData
-        type: file
-        required: true
-      
-    responses:
-        200:
-            description: The output values
-        
-    """
-    df_test=post_predict()
-    prediction=dt_multi_clf.predict(df_test)
-    return "The predicted values for the csv are" + str(list(prediction))
-
-@app.route('/predict_multi_rf') #by default get method
-def predict_multi_rf():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:  
-      - name: AirTemperature
-        in: query
-        type: number
-        required: true
-      - name: ProcessTemperature
-        in: query
-        type: number
-        required: true
-      - name: RotationalSpeed
-        in: query
-        type: number
-        required: true
-      - name: Torque
-        in: query
-        type: number
-        required: true
-      - name: ToolWear
-        in: query
-        type: number
-        required: true
-    responses:
-        200:
-            description: The output values
-        
-    """
-
-    test_df=get_predict()
-    prediction=rf_multi_clf.predict(test_df)
-    return "The predicted values is" + str(prediction)
-
-@app.route('/predict_file_multi_rf',methods=["POST"])
-def predict_file_multi_rf():
-
-    """Let's Classify for failure in a machine 
-    This is using docstrings for specifications.
-    ---
-    parameters:
-      - name: file
-        in: formData
-        type: file
-        required: true
-      
-    responses:
-        200:
-            description: The output values
-        
-    """
-    df_test=post_predict()
-    prediction=rf_multi_clf.predict(df_test)
-    return "The predicted values for the csv are" + str(list(prediction))
 
 if __name__=='__main__':
     app.run(debug=True)

@@ -26,42 +26,45 @@
       <h1>Multinomial Classification</h1>
     
     <div class="container"> 
-      <form class="row g-3">
-        <div class="col-md-6">
-          <label for="inputEmail4" class="form-label">Air Temperature</label>
-          <input type="text" class="form-control" id="airTemperature">
-        </div>
-        <div class="col-md-6">
-          <label for="inputPassword4" class="form-label">Process Temperature</label>
-          <input type="text" class="form-control" id="processTemperature">
-        </div>
-        <div class="col-md-6">
-          <label for="inputEmail4" class="form-label">Tool Wear</label>
-          <input type="text" class="form-control" id="toolWear">
-        </div>
-        <div class="col-md-6">
-          <label for="inputPassword4" class="form-label">Rotational Speed</label>
-          <input type="text" class="form-control" id="rotationalSpeed">
-        </div>
-        <div class="col-md-6">
-          <label for="inputEmail4" class="form-label">Torque</label>
-          <input type="text" class="form-control" id="torque">
-        </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
+      <form action = "/input_predict_multinomial" method = "post" enctype="multipart/form-data" class="row g-3"> 
+        <!-- <form action="#" class="row g-3"> -->
+          <h3>Predict using input values</h3>
+          <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Air Temperature</label>
+            <input type="text" class="form-control" name="airTemperature" id="airTemperature">
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Process Temperature</label>
+            <input type="text" class="form-control" name="processTemperature" id="processTemperature">
+          </div>
+          <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Tool Wear</label>
+            <input type="text" class="form-control" name="toolWear" id="toolWear">
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Rotational Speed</label>
+            <input type="text" class="form-control" name="rotationalSpeed" id="rotationalSpeed">
+          </div>
+          <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Torque</label>
+            <input type="text" class="form-control" name="torque" id="torque">
+          </div>
+          <div class="mb-3 mt-3">  
+            <input type="submit" name="model" value="Decision Tree"> 
+            <input type="submit" name="model" value="Random Forest"> 
+            <input type="submit" name="model" value="Logistic Regression">
+          </div>
+        </form>
 <hr/>
-<h3>Predict using file uploads</h3>
-      <div class="mb-3 mt-3">
-        <label for="formFile" class="form-label">Upload test data in CSV format</label>
-        <input class="form-control" type="file" id="formFile">
-      </div>
-
-      <div class="mb-3">
-        <button type="button" class="btn btn-primary">Random Forest</button>
-        <button type="button" class="btn btn-primary">Decision Tree</button>
-        <button type="button" class="btn btn-primary">Logistic Regression</button>
+     <h3>Predict using file uploads</h3>
+     <div class="mb-3 mt-3">
+        <form action = "/file_predict_multinomial" method = "post" enctype="multipart/form-data">   
+          <input type="file" name="file" />   
+          <input type="submit" name="model" value="Decision Tree"> 
+          <input type="submit" name="model" value="Random Forest">
+          <input type="submit" name="model" value="Logistic Regression">
+        <!-- <input type = "submit" value="Upload">  -->
+        </form>
       </div>
       
     </div>
