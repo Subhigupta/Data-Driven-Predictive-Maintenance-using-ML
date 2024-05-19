@@ -27,6 +27,10 @@ dt_multi_clf=pickle.load(pickle_in_multi_dt)
 pickle_in_multi_rf=open('rf_multi_clf.pkl','rb')
 rf_multi_clf=pickle.load(pickle_in_multi_rf)
 
+# Load the label encoder
+pickle_in_label_encoder=open('label_encoder.pkl','rb')
+label_encoder=pickle.load(pickle_in_label_encoder)
+
 def get_predict(AirTemperature,ProcessTemperature,RotationalSpeed,Torque,ToolWear):
     
     # AirTemperature = request.args.get('AirTemperature')
@@ -59,10 +63,11 @@ def file_predict_binary():
         model = request.form.get('model')
         if model == "Decision Tree":
           prediction = decision_tree_binary_clf.predict(df_test)
-          return "The predicted values for the csv are" + str(list(prediction))
+          print(prediction)
+          return "The predicted values for the user inputs in csv file are" + str(list(prediction))
         elif model == "Xgboost":
           prediction = decision_tree_binary_clf.predict(df_test)
-          return "The predicted values for the csv are" + str(list(prediction))
+          return "The predicted values for the user inputs in the csv file are" + str(list(prediction))
 
 @app.route('/input_predict_binary',methods=['POST'])
 def input_predict_binary():
@@ -78,10 +83,10 @@ def input_predict_binary():
     model = request.form.get('model')
     if model == "Decision Tree":
       prediction = decision_tree_binary_clf.predict(df_test)
-      return "The predicted values for the csv are" + str(list(prediction))
+      return "The predicted value for the user input is" + str(list(prediction))
     elif model == "Xgboost":
       prediction = decision_tree_binary_clf.predict(df_test)
-      return "The predicted values for the csv are" + str(list(prediction))
+      return "The predicted value for the user input is" + str(list(prediction))
 
 @app.route('/file_predict_multinomial', methods=['POST'])
 def file_predict_multinomial():
@@ -92,14 +97,18 @@ def file_predict_multinomial():
         model = request.form.get('model')
         if model == "Decision Tree":
           prediction = dt_multi_clf.predict(df_test)
-          return "The predicted values for the csv are" + str(list(prediction))
+          # Convert encoded predictions back to original string values
+          predicted_classes = label_encoder.inverse_transform(prediction)
+          return "The predicted values for the user inputs in the csv file are" + str(list(predicted_classes))
         elif model == "Random Forest":
           prediction = rf_multi_clf.predict(df_test)
-          return "The predicted values for the csv are" + str(list(prediction))
+          predicted_classes = label_encoder.inverse_transform(prediction)
+          return "The predicted values for the user inputs in the csv file are" + str(list(predicted_classes))
         elif model=="Logistic Regression":
             prediction=lr_multi_clf.predict(df_test)
-            return "The predicted values for the csv are" + str(list(prediction))
-
+            predicted_classes = label_encoder.inverse_transform(prediction)
+            return "The predicted values for the user inputs in the csv file are" + str(list(predicted_classes))
+        
 @app.route('/input_predict_multinomial',methods=['POST'])
 def input_predict_multinomial():
     AirTemperature=request.form["airTemperature"]
@@ -115,13 +124,16 @@ def input_predict_multinomial():
     model = request.form.get('model')
     if model == "Decision Tree":
       prediction = dt_multi_clf.predict(df_test)
-      return "The predicted values for the csv are" + str(list(prediction))
+      predicted_classes = label_encoder.inverse_transform(prediction)
+      return "The predicted value for the user input is" + str(list(predicted_classes))
     elif model == "Random Forest":
       prediction = rf_multi_clf.predict(df_test)
-      return "The predicted values for the csv are" + str(list(prediction))
+      predicted_classes = label_encoder.inverse_transform(prediction)
+      return "The predicted value for the user input is" + str(list(predicted_classes))
     elif model=="Logistic Regression":
         prediction=lr_multi_clf.predict(df_test)
-        return "The predicted values for the csv are" + str(list(prediction))
+        predicted_classes = label_encoder.inverse_transform(prediction)
+        return "The predicted value for the user input is" + str(list(predicted_classes))
 
 @app.route('/')
 @app.route('/home')

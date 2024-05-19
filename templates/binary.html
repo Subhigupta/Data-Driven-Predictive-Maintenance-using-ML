@@ -37,14 +37,20 @@
       <hr/>
       <h4>Failure prediction through uploading test data in CSV format</h4>
       <div class="row mt-3">
-        <form action = "/file_predict_binary" method = "post" enctype="multipart/form-data">   
-          <div class="col-md-3">
-            <input type="file" name="file" class="form-control" />   
-          </div>
+        <form action = "/file_predict_binary" method = "post" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-md-3">
+              <input type="file" name="file" class="form-control">   
+            </div>
+            <div class="col-md-3 mt-2">
+              <h5 style="font-weight:bold">Note: Upload CSV format file</h5>
+            </div>
+          </div>   
           <div class="col-md-3 mt-4">  
             <input type="submit" name="model" value="Decision Tree" class="btn btn-primary mx-3"> 
             <input type="submit" name="model" value="Xgboost" class="btn btn-primary"> 
           </div>
+          
         </form>
       </div>
   </div>

@@ -6,12 +6,27 @@
     <div class="row justify-content-md-center">
 
       <div class="col-md-10">
-        <h4>Objective of the project</h4>
+        <h4>Objective</h4>
         <p style="font-family:verdana;">
-          Objective of the problem was to develop predictive maintenance classification models using 
-          machine learning techniques to predict equipment failures in an industrial setting  before they occur, 
-          thereby enabling proactive maintenance interventions, minimizing downtime, reducing maintenance costs, 
+          Objective of the problem is to develop predictive maintenance classification models using 
+          machine learning techniques to predict equipment failure and failure modes in an industrial setting  before they occur.
+          This enables proactive maintenance interventions, minimizing downtime, reducing maintenance costs, 
           and maximizing operational efficiency.
+        </p>
+        <h4>Binary classification</h4>
+        <p style="font-family:verdana;">
+          In binomial classification the output column is of binary type: 0 and 1 values. Indicating whether the machine has 
+          failed in this particular datapoint. If the machine has undergone failure then any of the five independent
+          failure modes will be true:  Power Failure (PWF), Tool Wear Failure (TWF), Overstrain Failure (OSF), Random Failures (RNF), 
+          Heat Dissipation Failure (HDF). The failure modes have been taken into account in multinomial classification. We have used 
+          picked two best performing machine learning models for predicting failure: Random Forest and XGBoost. Go to the
+          Binary navigation tab to predict failure using aforementioned models.
+        </p> 
+        <h4>Multinomial classification</h4>
+        <p style="font-family:verdana;">
+          In mulltinomial classification the output column has six types of failure modes: No Failure, PWF, TWF, OSF, RNF and HDF. 
+          We have picked three best performing machine learning models for predicting failure mode: Decision Tree, Random Forest and 
+          XGBoost. Go the Multinomial navigation tab to predict failure mode using aforementioned models.
         </p>
       </div>
     </div>
