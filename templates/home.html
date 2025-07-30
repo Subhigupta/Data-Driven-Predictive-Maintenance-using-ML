@@ -8,26 +8,45 @@
       <div class="col-md-10">
         <h4>Objective</h4>
         <p style="font-family:verdana;">
-          Objective of the problem is to develop predictive maintenance classification models using 
-          machine learning techniques to predict equipment failure and failure modes in an industrial setting  before they occur.
+          Objective of the problem is to develop predictive maintenance models using 
+          machine learning techniques, to identify whether it is safe or not to operate a machine under a particular process condition.
           This enables proactive maintenance interventions, minimizing downtime, reducing maintenance costs, 
           and maximizing operational efficiency.
         </p>
         <h4>Binary classification</h4>
         <p style="font-family:verdana;">
+        In binary classification, the target column contains values <strong>0</strong> and <strong>1</strong>, 
+        indicating whether the machine has failed for a given datapoint.
+        </p>
+        <ul style="font-family:verdana;">
+          <li>0 indicates no failure.</li>
+          <li>1 indicates a failure has occurred.</li>
+        </ul>
+        <!-- <p style="font-family:verdana;">
           In binomial classification the output column is of binary type: 0 and 1 values. Indicating whether the machine has 
           failed in this particular datapoint. If the machine has undergone failure then any of the five independent
           failure modes will be true:  Power Failure (PWF), Tool Wear Failure (TWF), Overstrain Failure (OSF), Random Failures (RNF), 
           Heat Dissipation Failure (HDF). The failure modes have been taken into account in multinomial classification. We have used 
           picked two best performing machine learning models for predicting failure: Random Forest and XGBoost. Go to the
           Binary navigation tab to predict failure using aforementioned models.
-        </p> 
+        </p>  -->
         <h4>Multinomial classification</h4>
         <p style="font-family:verdana;">
+          In multinomial clasification, the target column contains following six failure modes:
+          <ul style="font-family:verdana;">
+            <li><strong>Power Failure</strong>: Issues related to power supply interruptions or electrical faults.</li>
+            <li><strong>Tool Wear Failure</strong>: Wear and degradation of machine tools leading to malfunction.</li>
+            <li><strong>Overstrain Failure</strong>: Excessive mechanical stress or load causing system breakdown.</li>
+            <li><strong>Random Failure</strong>: Failures occurring unpredictably without a clear cause.</li>
+            <li><strong>Heat Dissipation Failure</strong>: Inability to manage heat, leading to overheating and potential damage.</li>
+            <li><strong>No Failure</strong>: Indicating that equipment is in healthy state.</li>
+          </ul>
+        </p>
+        <!-- <p style="font-family:verdana;">
           In mulltinomial classification the output column has six types of failure modes: No Failure, PWF, TWF, OSF, RNF and HDF. 
           We have picked two best performing machine learning models for predicting failure mode: XGBoost and Random Forest and 
           XGBoost. Go the Multinomial navigation tab to predict failure mode using aforementioned models.
-        </p>
+        </p> -->
       </div>
     </div>
   </div>
