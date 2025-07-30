@@ -66,10 +66,56 @@ def input_predict_binary():
 
     if model == "Random Forest":
       prediction = random_forest_binary_clf.predict(df_test)
-      return "The predicted value for the user input is" + str(list(prediction))
     elif model == "Xgboost":
       prediction = xgboost_binary_clf.predict(df_test)
-      return "The predicted value for the user input is" + str(list(prediction))
+    
+    df_test['Target equipment state'] = prediction  # Add predictions to the DataFrame
+
+        # Convert to HTML table
+    html_table = df_test.to_html(classes='table table-striped', index=False)
+
+    return f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Arial, sans-serif; padding: 20px; }}
+            .table {{
+                width: 100%;
+                border-collapse: collapse;
+            }}
+            .table th, .table td {{
+                border: 1px solid #ccc;
+                padding: 8px;
+                text-align: center;
+            }}
+            .table th {{
+                background-color: #f2f2f2;
+            }}
+            .note {{
+                margin-bottom: 20px;
+                padding: 10px;
+                background-color: #ffffcc;
+                border-left: 6px solid #ffeb3b;
+            }}
+        </style>
+    </head>
+    <body>
+        <h2>Process Conditions and Corresponding Predictions</h2>
+        <div class="note">
+            <strong>Note:</strong> A prediction of <strong>1</strong> indicates that the equipment is predicted to be in a <strong>failure state</strong>. 
+            A prediction of <strong>0</strong> indicates eqipment is in <strong>non-failure state</strong>.
+        </div>
+        {html_table}
+    </body>
+    </html>
+    """
+    # if prediction[0]==0:
+    #    message = "The equipment is predicted to operate without failure under the specified process conditions."
+    # elif prediction[0]==1:
+    #    message =  ("The equipment is predicted to experience a failure under the specified process conditions.<br> "
+    #            "Please consider adjusting the operating parameters.<br>"
+    #            "To identify the specific failure type, use the pre-trained multinomial classification model.")
+    # return message
     
 @app.route('/file_predict_binary', methods=['POST'])
 def file_predict_binary():
@@ -81,12 +127,50 @@ def file_predict_binary():
 
         if model == "Random Forest":
           prediction = random_forest_binary_clf.predict(df_test)
-          #print(prediction)
-          return "The predicted values for the user inputs in csv file are" + str(list(prediction))
         
         elif model == "Xgboost":
           prediction = xgboost_binary_clf.predict(df_test)
-          return "The predicted values for the user inputs in the csv file are" + str(list(prediction))
+          
+        df_test['Target equipment state'] = prediction  # Add predictions to the DataFrame
+
+        # Convert to HTML table
+        html_table = df_test.to_html(classes='table table-striped', index=False)
+
+        return f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; padding: 20px; }}
+                .table {{
+                    width: 100%;
+                    border-collapse: collapse;
+                }}
+                .table th, .table td {{
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: center;
+                }}
+                .table th {{
+                    background-color: #f2f2f2;
+                }}
+                .note {{
+                    margin-bottom: 20px;
+                    padding: 10px;
+                    background-color: #ffffcc;
+                    border-left: 6px solid #ffeb3b;
+                }}
+            </style>
+        </head>
+        <body>
+            <h2>Process Conditions and Corresponding Predictions</h2>
+            <div class="note">
+                <strong>Note:</strong> A prediction of <strong>1</strong> indicates that the equipment is predicted to be in a <strong>failure state</strong>. 
+                A prediction of <strong>0</strong> indicates eqipment is in <strong>non-failure state</strong>.
+            </div>
+            {html_table}
+        </body>
+        </html>
+        """
 
 @app.route('/file_predict_multinomial', methods=['POST'])
 def file_predict_multinomial():
@@ -99,12 +183,42 @@ def file_predict_multinomial():
         if model == "Xgboost":
           prediction = xgboost_multi_clf.predict(df_test)
           predicted_classes = failure_type_encoder.inverse_transform(prediction) # Decode numerical pdictions
-          return "The predicted values for the user inputs in the csv file are" + str(list(predicted_classes))
-        
+          
         elif model == "Random Forest":
           prediction = random_forest_multi_clf.predict(df_test)
           predicted_classes = failure_type_encoder.inverse_transform(prediction) # Decode numerical pdictions
-          return "The predicted values for the user inputs in the csv file are" + str(list(predicted_classes))
+        
+        df_test['Target equipment failure mode'] = predicted_classes  # Add predictions to the DataFrame
+
+        # Convert to HTML table
+        html_table = df_test.to_html(classes='table table-striped', index=False)
+
+        # Return formatted HTML
+        return f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; padding: 20px; }}
+                .table {{
+                    width: 100%;
+                    border-collapse: collapse;
+                }}
+                .table th, .table td {{
+                    border: 1px solid #ccc;
+                    padding: 8px;
+                    text-align: center;
+                }}
+                .table th {{
+                    background-color: #f2f2f2;
+                }}
+            </style>
+        </head>
+        <body>
+            <h2>Process Conditions and Corresponding Predictions</h2>
+            {html_table}
+        </body>
+        </html>
+        """
         
 @app.route('/input_predict_multinomial',methods=['POST'])
 def input_predict_multinomial():
@@ -121,12 +235,42 @@ def input_predict_multinomial():
     if model == "Random Forest":
       prediction = random_forest_multi_clf.predict(df_test)
       predicted_classes = failure_type_encoder.inverse_transform(prediction)
-      return "The predicted value for the user input is" + str(list(predicted_classes))
     
     elif model == "Xgboost":
       prediction = xgboost_multi_clf.predict(df_test)
       predicted_classes = failure_type_encoder.inverse_transform(prediction)
-      return "The predicted value for the user input is" + str(list(predicted_classes))
+    
+    df_test['Target equipment failure mode'] = predicted_classes # Add predictions to the DataFrame
+
+    # Convert to HTML table
+    html_table = df_test.to_html(classes='table table-striped', index=False)
+
+    # Return formatted HTML
+    return f"""
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Arial, sans-serif; padding: 20px; }}
+            .table {{
+                width: 100%;
+                border-collapse: collapse;
+            }}
+            .table th, .table td {{
+                border: 1px solid #ccc;
+                padding: 8px;
+                text-align: center;
+            }}
+            .table th {{
+                background-color: #f2f2f2;
+            }}
+        </style>
+    </head>
+    <body>
+        <h2>Process Conditions and Corresponding Predictions</h2>
+        {html_table}
+    </body>
+    </html>
+    """
 
 @app.route('/')
 @app.route('/home')
