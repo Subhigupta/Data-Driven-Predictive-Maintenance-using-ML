@@ -6,27 +6,38 @@ import pickle
 from flasgger import Swagger
 import io 
 import sklearn
+import os
 
 app = Flask(__name__)
 Swagger(app) #giving an indication to Flask Web app to generate UI part
 
 print(sklearn.__version__)
+
 #Load the binary classifier files
-pickle_in_bnry_rf = open('random_forest_binary_clf.pkl','rb')
+bnry_model_path = r"D:\Machine Predictive Maintenance Classification Dataset\models\binary_classifiers"
+
+rf_model_path = os.path.join(bnry_model_path, 'random_forest_binary_clf.pkl')
+pickle_in_bnry_rf = open(rf_model_path,'rb')
 random_forest_binary_clf = pickle.load(pickle_in_bnry_rf)
 
-#load the multinominal classifier files
-pickle_in_multi_xgboost = open('xgbost_multi_clf.pkl','rb')
-xgboost_multi_clf = pickle.load(pickle_in_multi_xgboost)
-
-pickle_in_bnry_xgboost = open('xgboost_binary_clf.pkl','rb')
+xgboost_model_path = os.path.join(bnry_model_path,'xgboost_binary_clf.pkl')
+pickle_in_bnry_xgboost = open(xgboost_model_path,'rb')
 xgboost_binary_clf = pickle.load(pickle_in_bnry_xgboost)
 
-pickle_in_multi_rf = open('random_forest_multi_clf.pkl','rb')
+#load the multinominal classifier files
+multi_model_path = r"D:\Machine Predictive Maintenance Classification Dataset\models\multinomial_classifiers"
+
+rf_model_path = os.path.join(multi_model_path, 'random_forest_multi_clf.pkl' )
+pickle_in_multi_rf = open(rf_model_path,'rb')
 random_forest_multi_clf = pickle.load(pickle_in_multi_rf)
 
+xgboost_model_path = os.path.join(multi_model_path, 'xgboost_multi_clf.pkl')
+pickle_in_multi_xgboost = open(xgboost_model_path,'rb')
+xgboost_multi_clf = pickle.load(pickle_in_multi_xgboost)
+
 # Load the label encoder
-pickle_in_failure_type_encoder = open('failure_type_encoder.pkl','rb')
+encoder_path = r"D:\Machine Predictive Maintenance Classification Dataset\models\label_encoder\failure_type_encoder.pkl"
+pickle_in_failure_type_encoder = open(encoder_path,'rb')
 failure_type_encoder = pickle.load(pickle_in_failure_type_encoder)
 
 def get_predict(AirTemperature,ProcessTemperature,RotationalSpeed,Torque,ToolWear):
