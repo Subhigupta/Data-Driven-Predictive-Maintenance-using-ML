@@ -13,32 +13,32 @@ Swagger(app) #giving an indication to Flask Web app to generate UI part
 
 print(sklearn.__version__)
 
-#Load the binary classifier files
-bnry_model_path = r"D:\Machine Predictive Maintenance Classification Dataset\models\binary_classifiers"
-
+# Load the binary classifier files
+bnry_model_path = os.path.join("models", "binary_classifiers")
+print(bnry_model_path)
 rf_model_path = os.path.join(bnry_model_path, 'random_forest_binary_clf.pkl')
-pickle_in_bnry_rf = open(rf_model_path,'rb')
-random_forest_binary_clf = pickle.load(pickle_in_bnry_rf)
+with open(rf_model_path, 'rb') as f:
+    random_forest_binary_clf = pickle.load(f)
 
-xgboost_model_path = os.path.join(bnry_model_path,'xgboost_binary_clf.pkl')
-pickle_in_bnry_xgboost = open(xgboost_model_path,'rb')
-xgboost_binary_clf = pickle.load(pickle_in_bnry_xgboost)
+xgboost_model_path = os.path.join(bnry_model_path, 'xgboost_binary_clf.pkl')
+with open(xgboost_model_path, 'rb') as f:
+    xgboost_binary_clf = pickle.load(f)
 
-#load the multinominal classifier files
-multi_model_path = r"D:\Machine Predictive Maintenance Classification Dataset\models\multinomial_classifiers"
-
-rf_model_path = os.path.join(multi_model_path, 'random_forest_multi_clf.pkl' )
-pickle_in_multi_rf = open(rf_model_path,'rb')
-random_forest_multi_clf = pickle.load(pickle_in_multi_rf)
+# Load the multinomial classifier files
+multi_model_path = os.path.join("models", "multinomial_classifiers")
+rf_model_path = os.path.join(multi_model_path, 'random_forest_multi_clf.pkl')
+with open(rf_model_path, 'rb') as f:
+    random_forest_multi_clf = pickle.load(f)
 
 xgboost_model_path = os.path.join(multi_model_path, 'xgboost_multi_clf.pkl')
-pickle_in_multi_xgboost = open(xgboost_model_path,'rb')
-xgboost_multi_clf = pickle.load(pickle_in_multi_xgboost)
+with open(xgboost_model_path, 'rb') as f:
+    xgboost_multi_clf = pickle.load(f)
 
 # Load the label encoder
-encoder_path = r"D:\Machine Predictive Maintenance Classification Dataset\models\label_encoder\failure_type_encoder.pkl"
-pickle_in_failure_type_encoder = open(encoder_path,'rb')
-failure_type_encoder = pickle.load(pickle_in_failure_type_encoder)
+encoder_path = os.path.join("models", "label_encoder", "failure_type_encoder.pkl")
+with open(encoder_path, 'rb') as f:
+    failure_type_encoder = pickle.load(f)
+
 
 def get_predict(AirTemperature,ProcessTemperature,RotationalSpeed,Torque,ToolWear):
     
@@ -120,13 +120,6 @@ def input_predict_binary():
     </body>
     </html>
     """
-    # if prediction[0]==0:
-    #    message = "The equipment is predicted to operate without failure under the specified process conditions."
-    # elif prediction[0]==1:
-    #    message =  ("The equipment is predicted to experience a failure under the specified process conditions.<br> "
-    #            "Please consider adjusting the operating parameters.<br>"
-    #            "To identify the specific failure type, use the pre-trained multinomial classification model.")
-    # return message
     
 @app.route('/file_predict_binary', methods=['POST'])
 def file_predict_binary():
