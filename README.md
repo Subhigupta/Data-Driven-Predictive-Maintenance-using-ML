@@ -15,14 +15,28 @@ By anticipating potential failures, the solution supports proactive maintenance 
 ### 📦 1. Create a New Environment
 Create a new environment and install all dependencies through the provided `.yaml` file.
 ```bash
-conda env create -f environment.yaml
-conda activate <your_env_name>
+conda create -n myenv python=3.10 -y
+conda activate myenv
+pip install -r requirements.txt
 ```
 ### 📦 2. Clone the repo
 To start working on this project locally, clone this repository:
  ```bash
 git clone https://github.com/Subhigupta/Data-Driven-Predictive-Maintenance-using-ML.git
 ```
+
+### 📦 3. Build the docker image
+Run the command below to build the docker image for this project.
+ ```bash
+docker build -t testapp:latestapp
+```
+
+### 📦 4. Containerize your application
+Create a running instance of your application using the following command:
+ ```bash
+docker run -p 127.0.0.1:5000:8000 testapp:latestapp
+```
+To check your project hit the following [URL](http://127.0.0.1:5000/).
 
 ## 📁 Project Structure Guide
 
